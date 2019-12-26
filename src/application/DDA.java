@@ -5,7 +5,11 @@ import javafx.scene.Scene;
 public class DDA {
   private static final int WIDTH = 25;
   private static final int HEIGHT = 25;
-
+  private static final int SCREEN_WIDTH = 1280;
+  private static final int SCREEN_HEIGHT = 720;
+  private double[] position;
+  private double[] direction;
+  private double[] plane;
   private final int[][] map =
       {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -31,10 +35,24 @@ public class DDA {
           {1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
           {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-          {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
+          {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-  public static Scene buildScene() {
+  public DDA() {
+    position = new double[] {12.5, 12.5};
+    direction = new double[] {1, 0,};
+    plane = new double[] {0, .66};
+  }
 
+  public Scene buildScene() {
+    double xCamera;
+    double[] rayDirection;
+    double xRayDir;
+    double yRayDir;
+    for (int column = 0; column < SCREEN_WIDTH; column++) {
+      xCamera = ((2 * column) / SCREEN_WIDTH) - 1;
+      xRayDir = direction[0] + plane[0] * xCamera;
+      yRayDir = direction[1] + plane[1] * xCamera;
+    }
     return new Scene(null, WIDTH, HEIGHT);
   }
 }
