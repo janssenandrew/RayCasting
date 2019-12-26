@@ -91,8 +91,8 @@ public class DDA {
         drawEnd = SCREEN_HEIGHT - 1;
 
       Line line = new Line(column, drawStart, column, drawEnd);
-      System.out.println(drawStart);
-      System.out.println(drawEnd);
+      // System.out.println(drawStart);
+      // System.out.println(drawEnd);
       line.setStroke(Color.RED);
       group.getChildren().add(line);
     }

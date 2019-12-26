@@ -2,10 +2,16 @@ package application;
 
 import application.Things.Map;
 import application.Things.Player;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class TwoDimensional {
   private int screenWidth;
@@ -26,19 +32,42 @@ public class TwoDimensional {
     screenHeight = 20 * height;
   }
 
+  public void setup(Stage primaryStage) {
+    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+      player.handleMovement(key.getCode());
+    });
+  }
+
   public Scene buildScene() {
+    player.updatePosition();
     GridPane grid = new GridPane();
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        if (map[j][i] > 0) {
-          Rectangle rect = new Rectangle();
-          rect.setWidth(20);
-          rect.setHeight(20);
-          rect.setFill(Color.RED);
-          grid.add(rect, j, i);
-        }
+        Rectangle rect = new Rectangle();
+        rect.setWidth(20);
+        rect.setHeight(20);
+        rect.setFill(mapObject.getColor(j, i));
+        grid.add(rect, j, i);
       }
     }
-    return new Scene(grid, screenWidth, screenHeight);
+    StackPane stack = new StackPane();
+    Pane pix = new Pane();
+    Rectangle playerSprite = buildPlayer();
+    Group group = new Group();
+    playerSprite.setX(player.getPosition()[0] * 20);
+    playerSprite.setY(player.getPosition()[1] * 20);
+    Line line = new Line(0, 0, 500, 500);
+    line.setStroke(Color.TRANSPARENT);
+    group.getChildren().addAll(playerSprite, line);
+    stack.getChildren().addAll(grid, group);
+    return new Scene(stack, screenWidth, screenHeight);
+  }
+
+  private Rectangle buildPlayer() {
+    Rectangle play = new Rectangle();
+    play.setWidth(5);
+    play.setHeight(5);
+    play.setFill(Color.YELLOW);
+    return play;
   }
 }
