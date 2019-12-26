@@ -7,8 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class DDA {
-  private static final int WIDTH = 25;
-  private static final int HEIGHT = 25;
   private static final int SCREEN_WIDTH = 1280;
   private static final int SCREEN_HEIGHT = 720;
   private double[] position;
@@ -20,7 +18,7 @@ public class DDA {
     position = new double[] {10, 10};
     direction = new double[] {1, 0,};
     plane = new double[] {0, .66};
-    map = Map.getMap();
+    map = new Map().getMap();
   }
 
   public Scene buildScene() {
