@@ -12,13 +12,21 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
     DDA game = new DDA();
-    primaryStage.show();
-    new AnimationTimer() {
-      @Override
-      public void handle(long now) {
-        primaryStage.setScene(game.buildScene());
-      }
-    }.start();
+    boolean yes = false;
+    if (yes) {
+      primaryStage.show();
+      new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+          primaryStage.setScene(game.buildScene());
+        }
+      }.start();
+    }
+    else {
+      TwoDimensional TD = new TwoDimensional();
+      primaryStage.setScene(TD.buildScene());
+      primaryStage.show();
+    }
   }
 
   public static void main(String[] args) {
