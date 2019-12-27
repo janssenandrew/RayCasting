@@ -73,11 +73,11 @@ public class Things {
       switch (key) {
         case UP:
           //increasePos(new double[] {0, -.05});
-          move(1, .05);
+          move(1, .1);
           break;
         case DOWN:
           //increasePos(new double[] {0, .05});
-          move(-1, .05);
+          move(-1, .1);
           break;
         case LEFT:
           rotate(-5);

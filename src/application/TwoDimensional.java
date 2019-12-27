@@ -33,9 +33,10 @@ public class TwoDimensional {
   }
 
   public void setup(Stage primaryStage) {
-    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-      player.handleMovement(key.getCode());
-    });
+//    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+//      player.handleMovement(key.getCode());
+//    });
+//    
   }
 
   public Scene buildScene() {
