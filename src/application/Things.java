@@ -51,6 +51,12 @@ public class Things {
       position[0] += del[0];
       position[1] += del[1];
     }
+    
+    public void move(double dir, double nabla) {
+      position[0] += direction[0] * nabla * dir;
+      position[1] += direction[1] * nabla * dir;
+      
+    }
 
     public void rotate(double phi) {
       rotationMatrix(phi * 2 * Math.PI / 180);
@@ -66,10 +72,12 @@ public class Things {
     public void handleMovement(KeyCode key) {
       switch (key) {
         case UP:
-          increasePos(new double[] {0, -.05});
+          //increasePos(new double[] {0, -.05});
+          move(1, .05);
           break;
         case DOWN:
-          increasePos(new double[] {0, .05});
+          //increasePos(new double[] {0, .05});
+          move(-1, .05);
           break;
         case LEFT:
           rotate(-5);
