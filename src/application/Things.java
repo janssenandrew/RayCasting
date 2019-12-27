@@ -53,15 +53,14 @@ public class Things {
     }
 
     public void rotate(double phi) {
-       rotationMatrix(phi * 2 * Math.PI / 180);
+      rotationMatrix(phi * 2 * Math.PI / 180);
     }
-    
+
     private void rotationMatrix(double phi) {
       double x = direction[0] * Math.cos(phi) - direction[1] * Math.sin(phi);
-      double y = direction[0] * Math.sin(phi) - direction[1] * Math.cos(phi);
+      double y = direction[0] * Math.sin(phi) + direction[1] * Math.cos(phi);
       direction[0] = x;
       direction[1] = y;
-      System.out.println(direction[0] + " " + direction[1]);
     }
 
     public void handleMovement(KeyCode key) {
@@ -73,10 +72,10 @@ public class Things {
           increasePos(new double[] {0, .05});
           break;
         case LEFT:
-          rotate(-1);
+          rotate(-5);
           break;
         case RIGHT:
-          rotate(1);
+          rotate(5);
           break;
         default:
           break;

@@ -51,14 +51,17 @@ public class TwoDimensional {
       }
     }
     StackPane stack = new StackPane();
-    Pane pix = new Pane();
     Rectangle playerSprite = buildPlayer();
     Group group = new Group();
     playerSprite.setX(player.getPosition()[0] * 20);
     playerSprite.setY(player.getPosition()[1] * 20);
     Line line = new Line(0, 0, 500, 500);
+    Line look = new Line(player.getPosition()[0] * 20, player.getPosition()[1] * 20,
+        (player.getPosition()[0] + player.getDirection()[0]) * 20,
+        (player.getPosition()[1] + player.getDirection()[1]) * 20);
     line.setStroke(Color.TRANSPARENT);
-    group.getChildren().addAll(playerSprite, line);
+    look.setStroke(Color.YELLOW);
+    group.getChildren().addAll(playerSprite, line, look);
     stack.getChildren().addAll(grid, group);
     return new Scene(stack, screenWidth, screenHeight);
   }
