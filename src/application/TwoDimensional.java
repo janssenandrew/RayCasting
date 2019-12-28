@@ -20,8 +20,8 @@ public class TwoDimensional {
   Map mapObject;
 
   public TwoDimensional() {
-    player = new Player();
     mapObject = new Map();
+    player = new Player(mapObject.getMap());
     width = mapObject.getWidth();
     height = mapObject.getHeight();
     screenWidth = 20 * width;
@@ -45,10 +45,10 @@ public class TwoDimensional {
       }
     }
     StackPane stack = new StackPane();
-    //Rectangle playerSprite = buildPlayer();
+    // Rectangle playerSprite = buildPlayer();
     Group group = new Group();
-    //playerSprite.setX(player.getPosition()[0] * 20);
-    //playerSprite.setY(player.getPosition()[1] * 20);
+    // playerSprite.setX(player.getPosition()[0] * 20);
+    // playerSprite.setY(player.getPosition()[1] * 20);
     Line line = new Line(0, 0, 500, 500);
     Line look = new Line(player.getPosition()[0] * 20, player.getPosition()[1] * 20,
         (player.getPosition()[0] + player.getDirection()[0]) * 20,

@@ -8,12 +8,14 @@ public class Things {
     private double[] position;
     private double[] direction;
     private double[] speed;
-    //private double[] plane;
+    private int[][] map;
+    // private double[] plane;
 
-    public Player() {
+    public Player(int[][] map) {
       position = new double[] {12, 12};
       direction = new double[] {1, 0};
       speed = new double[] {0, 0};
+      this.map = map;
     }
 
     public double[] getPosition() {
@@ -53,9 +55,14 @@ public class Things {
     }
 
     public void move(double dir, double nabla) {
-      position[0] += direction[0] * nabla * dir;
-      position[1] += direction[1] * nabla * dir;
+      double x = position[0] + direction[0] * nabla * dir;
+      double y = position[1] + direction[1] * nabla * dir;
+      position[0] = (checkCollide(x, position[1])) ? position[0] : x;
+      position[1] = (checkCollide(position[0], y)) ? position[1] : y;
+    }
 
+    private boolean checkCollide(double x, double y) {
+      return map[(int) x][(int) y] != 0;
     }
 
     public void rotate(double phi) {
