@@ -8,7 +8,7 @@ public class Things {
     private double[] position;
     private double[] direction;
     private double[] speed;
-    private double[] plane;
+    //private double[] plane;
 
     public Player() {
       position = new double[] {12, 12};
@@ -51,11 +51,11 @@ public class Things {
       position[0] += del[0];
       position[1] += del[1];
     }
-    
+
     public void move(double dir, double nabla) {
       position[0] += direction[0] * nabla * dir;
       position[1] += direction[1] * nabla * dir;
-      
+
     }
 
     public void rotate(double phi) {
@@ -72,18 +72,16 @@ public class Things {
     public void handleMovement(KeyCode key) {
       switch (key) {
         case UP:
-          //increasePos(new double[] {0, -.05});
-          move(1, .1);
+          move(1, .05);
           break;
         case DOWN:
-          //increasePos(new double[] {0, .05});
-          move(-1, .1);
+          move(-1, .05);
           break;
         case LEFT:
-          rotate(-5);
+          rotate(-1);
           break;
         case RIGHT:
-          rotate(5);
+          rotate(1);
           break;
         default:
           break;

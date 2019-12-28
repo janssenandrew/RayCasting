@@ -4,9 +4,7 @@ import application.Things.Map;
 import application.Things.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -20,12 +18,10 @@ public class TwoDimensional {
   int height;
   private Player player;
   Map mapObject;
-  private int[][] map;
 
   public TwoDimensional() {
     player = new Player();
     mapObject = new Map();
-    map = mapObject.getMap();
     width = mapObject.getWidth();
     height = mapObject.getHeight();
     screenWidth = 20 * width;
@@ -33,10 +29,7 @@ public class TwoDimensional {
   }
 
   public void setup(Stage primaryStage) {
-//    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-//      player.handleMovement(key.getCode());
-//    });
-//    
+    Main.wireInput(primaryStage, player);
   }
 
   public Scene buildScene() {
@@ -52,19 +45,20 @@ public class TwoDimensional {
       }
     }
     StackPane stack = new StackPane();
-    Rectangle playerSprite = buildPlayer();
+    //Rectangle playerSprite = buildPlayer();
     Group group = new Group();
-    playerSprite.setX(player.getPosition()[0] * 20);
-    playerSprite.setY(player.getPosition()[1] * 20);
+    //playerSprite.setX(player.getPosition()[0] * 20);
+    //playerSprite.setY(player.getPosition()[1] * 20);
     Line line = new Line(0, 0, 500, 500);
     Line look = new Line(player.getPosition()[0] * 20, player.getPosition()[1] * 20,
         (player.getPosition()[0] + player.getDirection()[0]) * 20,
         (player.getPosition()[1] + player.getDirection()[1]) * 20);
     line.setStroke(Color.TRANSPARENT);
     look.setStroke(Color.YELLOW);
-    group.getChildren().addAll(playerSprite, line, look);
+    group.getChildren().addAll(line, look);
     stack.getChildren().addAll(grid, group);
-    return new Scene(stack, screenWidth, screenHeight);
+    Scene scene = new Scene(stack, screenWidth, screenHeight);
+    return scene;
   }
 
   private Rectangle buildPlayer() {
