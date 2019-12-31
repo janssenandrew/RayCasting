@@ -16,8 +16,13 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
     DDA game = new DDA();
-    boolean yes = false;
+    boolean yes = true;
     if (yes) {
+      if (false) {
+        primaryStage.show();
+        primaryStage.setScene(game.buildScene());
+        return;
+      }
       primaryStage.show();
       new AnimationTimer() {
         @Override

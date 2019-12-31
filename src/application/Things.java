@@ -7,13 +7,16 @@ public class Things {
   static public class Player {
     private double[] position;
     private double[] direction;
+    private double[] plane;
+    private double angle;
     private double[] speed;
     private int[][] map;
-    // private double[] plane;
 
     public Player(int[][] map) {
       position = new double[] {12, 12};
       direction = new double[] {1, 0};
+      plane = new double[] {0, .66};
+      angle = 0;
       speed = new double[] {0, 0};
       this.map = map;
     }
@@ -28,6 +31,10 @@ public class Things {
 
     public double[] getDirection() {
       return direction;
+    }
+    
+    public double[] getPlane() {
+      return plane;
     }
 
     public void setDirection(double[] direction) {
@@ -44,29 +51,36 @@ public class Things {
 
     public void incSpeed(double[] accel) {}
 
-    public void updatePosition() {
-      position[0] += speed[0];
-      position[1] += speed[1];
-    }
+//    public void updatePosition() {
+//      position[0] += speed[0];
+//      position[1] += speed[1];
+//    }
 
-    public void increasePos(double[] del) {
-      position[0] += del[0];
-      position[1] += del[1];
-    }
+//    public void increasePos(double[] del) {
+//      position[0] += del[0];
+//      position[1] += del[1];
+//    }
 
     public void move(double dir, double nabla) {
       double x = position[0] + direction[0] * nabla * dir;
       double y = position[1] + direction[1] * nabla * dir;
       position[0] = (checkCollide(x, position[1])) ? position[0] : x;
       position[1] = (checkCollide(position[0], y)) ? position[1] : y;
+      //System.out.println(position[0] + " " + position[1]);
     }
 
     private boolean checkCollide(double x, double y) {
-      return map[(int) x][(int) y] != 0;
+      return map[(int) y][(int) x] != 0;
     }
 
     public void rotate(double phi) {
-      rotationMatrix(phi * 2 * Math.PI / 180);
+      rotationMatrix(phi * Math.PI / 180);
+      angle += phi;
+      if (angle == 360)
+        angle = 0;
+      if (angle == -1)
+        angle = 359;
+      //System.out.println(angle);
     }
 
     private void rotationMatrix(double phi) {
@@ -79,10 +93,10 @@ public class Things {
     public void handleMovement(KeyCode key) {
       switch (key) {
         case UP:
-          move(1, .05);
+          move(1, .02);
           break;
         case DOWN:
-          move(-1, .05);
+          move(-1, .02);
           break;
         case LEFT:
           rotate(-1);
@@ -155,6 +169,8 @@ public class Things {
           return Color.RED;
         case 4:
           return Color.GREEN;
+        case 5:
+          return Color.MAGENTA;
         default:
           return Color.BLACK;
       }

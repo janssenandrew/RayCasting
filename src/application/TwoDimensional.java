@@ -33,14 +33,14 @@ public class TwoDimensional {
   }
 
   public Scene buildScene() {
-    player.updatePosition();
+    //player.updatePosition();
     GridPane grid = new GridPane();
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rect = new Rectangle();
         rect.setWidth(20);
         rect.setHeight(20);
-        rect.setFill(mapObject.getColor(j, i));
+        rect.setFill(mapObject.getColor(i, j));
         grid.add(rect, j, i);
       }
     }

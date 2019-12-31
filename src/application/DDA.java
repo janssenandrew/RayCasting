@@ -1,6 +1,7 @@
 package application;
 
 import application.Things.Map;
+import application.Things.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -13,15 +14,25 @@ public class DDA {
   private double[] direction;
   private double[] plane;
   private final int[][] map;
+  
+  private Player player;
+  Map mapObject;
 
   public DDA() {
     position = new double[] {10, 10};
     direction = new double[] {1, 0,};
-    plane = new double[] {0, .66};
-    map = new Map().getMap();
+    //map = new Map().getMap();
+    
+
+    mapObject = new Map();
+    player = new Player(mapObject.getMap());
+    map = mapObject.getMap();
   }
 
   public Scene buildScene() {
+    position = player.getPosition();
+    direction = player.getDirection();
+    plane = player.getPlane();
     Group group = new Group();
     double xCamera;
     double xRayDir;
@@ -29,7 +40,7 @@ public class DDA {
     double sideDistX;
     double sideDistY;
     for (double column = 0; column < SCREEN_WIDTH; column++) {
-      xCamera = ((2 * column) / SCREEN_WIDTH) - 1;
+      xCamera = ((2 * column) / (double)SCREEN_WIDTH) - 1;
       xRayDir = direction[0] + plane[0] * xCamera;
       // System.out.println(direction[0] + " " + plane[0] + " " + xCamera);
       // System.out.println(xRayDir);
@@ -53,32 +64,35 @@ public class DDA {
         sideDistX = (position[0] - xSquare) * deltaDistX;
       } else {
         stepX = 1;
-        sideDistX = ((int) position[0] + 1.0 - xSquare) * deltaDistX;
+        sideDistX = (xSquare + 1.0 - position[0]) * deltaDistX;
       }
       if (yRayDir < 0) {
         stepY = -1;
         sideDistY = (position[1] - ySquare) * deltaDistY;
       } else {
         stepY = 1;
-        sideDistY = ((int) position[1] + 1.0 - ySquare) * deltaDistY;
+        sideDistY = (ySquare + 1.0 - position[1]) * deltaDistY;
       }
+      //System.out.println(stepX + " " + stepY);
       boolean collision = false;
       while (!collision) {
         if (sideDistX < sideDistY) {
           sideDistX += deltaDistX;
           xSquare += stepX;
           side = 0;
+          System.out.println("x<y");
         } else {
           sideDistY += deltaDistY;
           ySquare += stepY;
           side = 1;
+          System.out.println("y<x");
         }
         // collision detection
         if (map[xSquare][ySquare] != 0)
           collision = true;
       }
-      perpWallDist = (side == 0) ? (double) xSquare - position[0] + (1 - stepX / 2) / yRayDir
-          : (double) ySquare - position[1] + (1 - stepY / 2) / yRayDir;
+      perpWallDist = (side == 0) ? ((double) xSquare - position[0] + ((1 - stepX )/ 2)) / xRayDir
+          : (double) (ySquare - position[1] + ((1 - stepY) / 2)) / yRayDir;
       // System.out.println(perpWallDist);
       // System.out.println(collision);
       int wallHeight = (int) (SCREEN_HEIGHT / perpWallDist);
@@ -93,11 +107,10 @@ public class DDA {
       Line line = new Line(column, drawStart, column, drawEnd);
       // System.out.println(drawStart);
       // System.out.println(drawEnd);
-      line.setStroke(Color.RED);
+      Color color = (side == 0) ? Color.RED : Color.ORANGERED;
+      line.setStroke(color);
       group.getChildren().add(line);
     }
-    position[0] += .01;
-    position[1] += .01;
     return new Scene(group, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 }
