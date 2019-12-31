@@ -9,8 +9,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 public class DDA {
-  private static final int SCREEN_WIDTH = 1280;
-  private static final int SCREEN_HEIGHT = 720;
+  private static final int SCREEN_WIDTH = 1600;
+  private static final int SCREEN_HEIGHT = 900;
   private double[] position;
   private double[] direction;
   private double[] screen;
@@ -35,78 +35,77 @@ public class DDA {
     direction = player.getDirection();
     screen = player.getScreen();
     Group group = new Group();
-    double xCamera;
-    double xRayDir;
-    double yRayDir;
-    double sideDistX;
-    double sideDistY;
+    double cameraPosition;
+    double xRayDirection;
+    double yRayDirection;
+    double xSideDist;
+    double ySideDist;
     for (double column = 0; column < SCREEN_WIDTH; column++) {
-      xCamera = ((2 * column) / (double) SCREEN_WIDTH) - 1;
-      xRayDir = direction[0] + screen[0] * xCamera;
-      yRayDir = direction[1] + screen[1] * xCamera;
+      cameraPosition = ((2 * column) / (double) SCREEN_WIDTH) - 1;
+      xRayDirection = direction[0] + screen[0] * cameraPosition;
+      yRayDirection = direction[1] + screen[1] * cameraPosition;
 
-      double deltaDistX = Math.abs(1 / xRayDir);
-      double deltaDistY = Math.abs(1 / yRayDir);
-      double perpWallDist;
+      double xDelta = Math.abs(1 / xRayDirection);
+      double yDelta = Math.abs(1 / yRayDirection);
+      double distance;
 
 
       // step direction
-      int stepX;
-      int stepY;
+      int xStep;
+      int yStep;
       int side = 0;
 
       int xSquare = (int) position[0];
       int ySquare = (int) position[1];
-      if (xRayDir < 0) {
-        stepX = -1;
-        sideDistX = (position[0] - xSquare) * deltaDistX;
+      if (xRayDirection < 0) {
+        xStep = -1;
+        xSideDist = (position[0] - xSquare) * xDelta;
       } else {
-        stepX = 1;
-        sideDistX = (xSquare + 1.0 - position[0]) * deltaDistX;
+        xStep = 1;
+        xSideDist = (xSquare + 1.0 - position[0]) * xDelta;
       }
-      if (yRayDir < 0) {
-        stepY = -1;
-        sideDistY = (position[1] - ySquare) * deltaDistY;
+      if (yRayDirection < 0) {
+        yStep = -1;
+        ySideDist = (position[1] - ySquare) * yDelta;
       } else {
-        stepY = 1;
-        sideDistY = (ySquare + 1.0 - position[1]) * deltaDistY;
+        yStep = 1;
+        ySideDist = (ySquare + 1.0 - position[1]) * yDelta;
       }
-      // System.out.println(stepX + " " + stepY);
       boolean collision = false;
       while (!collision) {
-        if (sideDistX < sideDistY) {
-          sideDistX += deltaDistX;
-          xSquare += stepX;
+        if (xSideDist < ySideDist) {
+          xSideDist += xDelta;
+          xSquare += xStep;
           side = 0;
         } else {
-          sideDistY += deltaDistY;
-          ySquare += stepY;
+          ySideDist += yDelta;
+          ySquare += yStep;
           side = 1;
         }
         // collision detection
         if (map[ySquare][xSquare] != 0)
           collision = true;
       }
-      perpWallDist = (side == 0) ? ((double) xSquare - position[0] + ((1 - stepX) / 2)) / xRayDir
-          : (double) (ySquare - position[1] + ((1 - stepY) / 2)) / yRayDir;
-      // System.out.println(perpWallDist);
-      // System.out.println(collision);
-      int wallHeight = (int) (SCREEN_HEIGHT / perpWallDist);
+      distance = (side == 0) ? ((double) xSquare - position[0] + ((1 - xStep) / 2)) / xRayDirection
+          : (double) (ySquare - position[1] + ((1 - yStep) / 2)) / yRayDirection;
+      int wallHeight = (int) (SCREEN_HEIGHT / distance);
 
-      int drawStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
-      if (drawStart < 0)
-        drawStart = 0;
-      int drawEnd = wallHeight / 2 + SCREEN_HEIGHT / 2;
-      if (drawEnd >= SCREEN_HEIGHT)
-        drawEnd = SCREEN_HEIGHT - 1;
-
-      Line line = new Line(column, drawStart, column, drawEnd);
-      // System.out.println(drawStart);
-      // System.out.println(drawEnd);
+      Line line = drawLine(column, wallHeight);
       Color color = (side == 0) ? Color.RED : Color.ORANGERED;
       line.setStroke(color);
       group.getChildren().add(line);
     }
     return new Scene(group, SCREEN_WIDTH, SCREEN_HEIGHT);
+  }
+
+  private Line drawLine(double column, int wallHeight) {
+    int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
+    if (lineStart < 0)
+      lineStart = 0;
+    int lineEnd = wallHeight / 2 + SCREEN_HEIGHT / 2;
+    if (lineEnd >= SCREEN_HEIGHT)
+      lineEnd = SCREEN_HEIGHT - 1;
+
+    return new Line(column, lineStart, column, lineEnd);
   }
 }

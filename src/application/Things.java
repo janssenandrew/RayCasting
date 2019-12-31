@@ -30,7 +30,7 @@ public class Things {
     public double[] getDirection() {
       return direction;
     }
-    
+
     public double[] getScreen() {
       return screen;
     }
@@ -54,7 +54,6 @@ public class Things {
       double y = position[1] + direction[1] * nabla * dir;
       position[0] = (checkCollide(x, position[1])) ? position[0] : x;
       position[1] = (checkCollide(position[0], y)) ? position[1] : y;
-      System.out.println(position[0] + " " + position[1]);
     }
 
     private boolean checkCollide(double x, double y) {
@@ -72,7 +71,7 @@ public class Things {
       direction[0] = x;
       direction[1] = y;
     }
-    
+
     private void rotateScreen(double phi) {
       double x = screen[0] * Math.cos(phi) - screen[1] * Math.sin(phi);
       double y = screen[0] * Math.sin(phi) + screen[1] * Math.cos(phi);
