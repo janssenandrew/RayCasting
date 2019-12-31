@@ -15,19 +15,17 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
-    DDA game = new DDA();
     boolean yes = true;
     if (yes) {
-      if (false) {
-        primaryStage.show();
-        primaryStage.setScene(game.buildScene());
-        return;
-      }
+      DDA RayCaster = new DDA();
+      RayCaster.setup(primaryStage);
       primaryStage.show();
       new AnimationTimer() {
         @Override
         public void handle(long now) {
-          primaryStage.setScene(game.buildScene());
+          for (KeyCode key : activeKeys)
+            player.handleMovement(key);
+          primaryStage.setScene(RayCaster.buildScene());
         }
       }.start();
     } else {

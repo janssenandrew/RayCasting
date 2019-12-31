@@ -7,16 +7,14 @@ public class Things {
   static public class Player {
     private double[] position;
     private double[] direction;
-    private double[] plane;
-    private double angle;
+    private double[] screen;
     private double[] speed;
     private int[][] map;
 
     public Player(int[][] map) {
       position = new double[] {12, 12};
       direction = new double[] {1, 0};
-      plane = new double[] {0, .66};
-      angle = 0;
+      screen = new double[] {0, .66};
       speed = new double[] {0, 0};
       this.map = map;
     }
@@ -33,8 +31,8 @@ public class Things {
       return direction;
     }
     
-    public double[] getPlane() {
-      return plane;
+    public double[] getScreen() {
+      return screen;
     }
 
     public void setDirection(double[] direction) {
@@ -51,22 +49,12 @@ public class Things {
 
     public void incSpeed(double[] accel) {}
 
-//    public void updatePosition() {
-//      position[0] += speed[0];
-//      position[1] += speed[1];
-//    }
-
-//    public void increasePos(double[] del) {
-//      position[0] += del[0];
-//      position[1] += del[1];
-//    }
-
     public void move(double dir, double nabla) {
       double x = position[0] + direction[0] * nabla * dir;
       double y = position[1] + direction[1] * nabla * dir;
       position[0] = (checkCollide(x, position[1])) ? position[0] : x;
       position[1] = (checkCollide(position[0], y)) ? position[1] : y;
-      //System.out.println(position[0] + " " + position[1]);
+      System.out.println(position[0] + " " + position[1]);
     }
 
     private boolean checkCollide(double x, double y) {
@@ -74,20 +62,22 @@ public class Things {
     }
 
     public void rotate(double phi) {
-      rotationMatrix(phi * Math.PI / 180);
-      angle += phi;
-      if (angle == 360)
-        angle = 0;
-      if (angle == -1)
-        angle = 359;
-      //System.out.println(angle);
+      rotateDirection(phi * Math.PI / 180);
+      rotateScreen(phi * Math.PI / 180);
     }
 
-    private void rotationMatrix(double phi) {
+    private void rotateDirection(double phi) {
       double x = direction[0] * Math.cos(phi) - direction[1] * Math.sin(phi);
       double y = direction[0] * Math.sin(phi) + direction[1] * Math.cos(phi);
       direction[0] = x;
       direction[1] = y;
+    }
+    
+    private void rotateScreen(double phi) {
+      double x = screen[0] * Math.cos(phi) - screen[1] * Math.sin(phi);
+      double y = screen[0] * Math.sin(phi) + screen[1] * Math.cos(phi);
+      screen[0] = x;
+      screen[1] = y;
     }
 
     public void handleMovement(KeyCode key) {

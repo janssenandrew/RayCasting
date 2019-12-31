@@ -33,7 +33,6 @@ public class TwoDimensional {
   }
 
   public Scene buildScene() {
-    //player.updatePosition();
     GridPane grid = new GridPane();
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -45,10 +44,7 @@ public class TwoDimensional {
       }
     }
     StackPane stack = new StackPane();
-    // Rectangle playerSprite = buildPlayer();
     Group group = new Group();
-    // playerSprite.setX(player.getPosition()[0] * 20);
-    // playerSprite.setY(player.getPosition()[1] * 20);
     Line line = new Line(0, 0, 500, 500);
     Line look = new Line(player.getPosition()[0] * 20, player.getPosition()[1] * 20,
         (player.getPosition()[0] + player.getDirection()[0]) * 20,
@@ -59,13 +55,5 @@ public class TwoDimensional {
     stack.getChildren().addAll(grid, group);
     Scene scene = new Scene(stack, screenWidth, screenHeight);
     return scene;
-  }
-
-  private Rectangle buildPlayer() {
-    Rectangle play = new Rectangle();
-    play.setWidth(5);
-    play.setHeight(5);
-    play.setFill(Color.YELLOW);
-    return play;
   }
 }

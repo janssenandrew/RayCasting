@@ -6,33 +6,34 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 
 public class DDA {
   private static final int SCREEN_WIDTH = 1280;
   private static final int SCREEN_HEIGHT = 720;
   private double[] position;
   private double[] direction;
-  private double[] plane;
+  private double[] screen;
   private final int[][] map;
-  
+
   private Player player;
   Map mapObject;
 
   public DDA() {
-    position = new double[] {10, 10};
-    direction = new double[] {1, 0,};
-    //map = new Map().getMap();
-    
-
     mapObject = new Map();
-    player = new Player(mapObject.getMap());
     map = mapObject.getMap();
+    player = new Player(map);
+
+  }
+
+  public void setup(Stage primaryStage) {
+    Main.wireInput(primaryStage, player);
   }
 
   public Scene buildScene() {
     position = player.getPosition();
     direction = player.getDirection();
-    plane = player.getPlane();
+    screen = player.getScreen();
     Group group = new Group();
     double xCamera;
     double xRayDir;
@@ -40,15 +41,12 @@ public class DDA {
     double sideDistX;
     double sideDistY;
     for (double column = 0; column < SCREEN_WIDTH; column++) {
-      xCamera = ((2 * column) / (double)SCREEN_WIDTH) - 1;
-      xRayDir = direction[0] + plane[0] * xCamera;
-      // System.out.println(direction[0] + " " + plane[0] + " " + xCamera);
-      // System.out.println(xRayDir);
-      yRayDir = direction[1] + plane[1] * xCamera;
+      xCamera = ((2 * column) / (double) SCREEN_WIDTH) - 1;
+      xRayDir = direction[0] + screen[0] * xCamera;
+      yRayDir = direction[1] + screen[1] * xCamera;
 
       double deltaDistX = Math.abs(1 / xRayDir);
       double deltaDistY = Math.abs(1 / yRayDir);
-      // System.out.println(deltaDistX);
       double perpWallDist;
 
 
@@ -73,25 +71,23 @@ public class DDA {
         stepY = 1;
         sideDistY = (ySquare + 1.0 - position[1]) * deltaDistY;
       }
-      //System.out.println(stepX + " " + stepY);
+      // System.out.println(stepX + " " + stepY);
       boolean collision = false;
       while (!collision) {
         if (sideDistX < sideDistY) {
           sideDistX += deltaDistX;
           xSquare += stepX;
           side = 0;
-          System.out.println("x<y");
         } else {
           sideDistY += deltaDistY;
           ySquare += stepY;
           side = 1;
-          System.out.println("y<x");
         }
         // collision detection
-        if (map[xSquare][ySquare] != 0)
+        if (map[ySquare][xSquare] != 0)
           collision = true;
       }
-      perpWallDist = (side == 0) ? ((double) xSquare - position[0] + ((1 - stepX )/ 2)) / xRayDir
+      perpWallDist = (side == 0) ? ((double) xSquare - position[0] + ((1 - stepX) / 2)) / xRayDir
           : (double) (ySquare - position[1] + ((1 - stepY) / 2)) / yRayDir;
       // System.out.println(perpWallDist);
       // System.out.println(collision);
