@@ -151,7 +151,7 @@ public class Things {
     public Color getColor(int i, int j) {
       switch (map[i][j]) {
         case 1:
-          return Color.WHITE;
+          return Color.GREY;
         case 2:
           return Color.BLUE;
         case 3:

@@ -1,11 +1,16 @@
 package application;
 
+import java.util.ArrayList;
 import application.Things.Map;
 import application.Things.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class DDA {
@@ -26,8 +31,12 @@ public class DDA {
 
   }
 
+  protected ArrayList<KeyCode> getActiveKeys() {
+    return activeKeys;
+  }
+
   public void setup(Stage primaryStage) {
-    Main.wireInput(primaryStage, player);
+    wireInput(primaryStage, player);
   }
 
   public Scene buildScene() {
@@ -35,6 +44,17 @@ public class DDA {
     direction = player.getDirection();
     screen = player.getScreen();
     Group group = new Group();
+    Group group2 = new Group();
+    StackPane stack = new StackPane();
+    Rectangle rect = new Rectangle(800, 450, 1600, 450);
+    rect.setStroke(Color.BLACK);
+
+    Rectangle rect2 = new Rectangle(800, 0, 1600, 450);
+    rect2.setStroke(Color.BLUE);
+    group2.getChildren().addAll(rect, rect2);
+
+    stack.getChildren().add(group2);
+
     double cameraPosition;
     double xRayDirection;
     double yRayDirection;
@@ -91,11 +111,14 @@ public class DDA {
       int wallHeight = (int) (SCREEN_HEIGHT / distance);
 
       Line line = drawLine(column, wallHeight);
-      Color color = (side == 0) ? Color.RED : Color.ORANGERED;
+      Color color = mapObject.getColor(ySquare, xSquare);
+      if (side != 0)
+        color = color.darker();
       line.setStroke(color);
       group.getChildren().add(line);
     }
-    return new Scene(group, SCREEN_WIDTH, SCREEN_HEIGHT);
+    stack.getChildren().add(group);
+    return new Scene(stack, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
   private Line drawLine(double column, int wallHeight) {
