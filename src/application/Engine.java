@@ -27,7 +27,7 @@ public class Engine {
     this.primaryStage = primaryStage;
     activeKeys = new ArrayList<KeyCode>();
   }
-  
+
   public Engine(int dimension, Stage primaryStage) {
     this(dimension, new Things(), primaryStage);
   }
