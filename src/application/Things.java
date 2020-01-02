@@ -4,14 +4,30 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class Things {
-  static public class Player {
+  Player player;
+  Map map;
+
+  public Things() {
+    map = new Map();
+    player = new Player(map);
+  }
+
+  public Map getMap() {
+    return map;
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public class Player {
     private double[] position;
     private double[] direction;
     private double[] screen;
     private double[] speed;
-    private int[][] map;
+    private Map map;
 
-    public Player(int[][] map) {
+    public Player(Map map) {
       position = new double[] {12, 12};
       direction = new double[] {1, 0};
       screen = new double[] {0, .66};
@@ -57,7 +73,7 @@ public class Things {
     }
 
     private boolean checkCollide(double x, double y) {
-      return map[(int) y][(int) x] != 0;
+      return map.getMap()[(int) y][(int) x] != 0;
     }
 
     public void rotate(double phi) {
@@ -98,13 +114,13 @@ public class Things {
       }
     }
   }
-  static public class Map {
+  public class Map {
     private static final int WIDTH = 25;
 
 
 
     private static final int HEIGHT = 25;
-    private static final int[][] map1 =
+    private final int[][] map1 =
         {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},

@@ -20,23 +20,20 @@ public class DDA {
   private double[] direction;
   private double[] screen;
   private final int[][] map;
+  private Things things;
 
   private Player player;
   Map mapObject;
 
   public DDA() {
-    mapObject = new Map();
+    things = new Things();
+    mapObject = things.getMap();
     map = mapObject.getMap();
-    player = new Player(map);
-
-  }
-
-  protected ArrayList<KeyCode> getActiveKeys() {
-    return activeKeys;
+    player = things.getPlayer();
   }
 
   public void setup(Stage primaryStage) {
-    wireInput(primaryStage, player);
+    Main.wireInput(primaryStage, player);
   }
 
   public Scene buildScene() {

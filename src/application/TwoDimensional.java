@@ -17,11 +17,13 @@ public class TwoDimensional {
   int width;
   int height;
   private Player player;
-  Map mapObject;
+  private Map mapObject;
+  private Things things;
 
   public TwoDimensional() {
-    mapObject = new Map();
-    player = new Player(mapObject.getMap());
+    things = new Things();
+    mapObject = things.getMap();
+    player = things.getPlayer();
     width = mapObject.getWidth();
     height = mapObject.getHeight();
     screenWidth = 20 * width;

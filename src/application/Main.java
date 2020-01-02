@@ -18,6 +18,8 @@ public class Main extends Application {
   private static ArrayList<KeyCode> activeKeys = new ArrayList<KeyCode>();
   private static Player player;
 
+  public Main() {}
+
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
     primaryStage.setScene(startScreen(primaryStage));
