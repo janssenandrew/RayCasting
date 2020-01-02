@@ -19,7 +19,7 @@ public class Things {
   public Player getPlayer() {
     return player;
   }
-  
+
   public void update(KeyCode key) {
     player.handleMovement(key);
   }
@@ -100,8 +100,10 @@ public class Things {
     }
 
     public void handleMovement(KeyCode key) {
+      // System.out.println("Hello");
       switch (key) {
         case UP:
+          // System.out.println("up");
           move(1, .02);
           break;
         case DOWN:

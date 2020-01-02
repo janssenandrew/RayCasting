@@ -9,29 +9,22 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
-public class TwoDimensional implements Renderer{
+public class TwoDimensional implements Renderer {
   private int screenWidth;
   private int screenHeight;
   int width;
   int height;
   private Player player;
   private Map mapObject;
-  private Things things;
 
-  public TwoDimensional() {
-    things = new Things();
+  public TwoDimensional(Things things) {
     mapObject = things.getMap();
     player = things.getPlayer();
     width = mapObject.getWidth();
     height = mapObject.getHeight();
     screenWidth = 20 * width;
     screenHeight = 20 * height;
-  }
-
-  public void setup(Stage primaryStage) {
-    Main.wireInput(primaryStage, player);
   }
 
   public Scene buildScene() {

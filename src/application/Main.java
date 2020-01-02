@@ -1,57 +1,24 @@
 package application;
 
-import java.util.ArrayList;
-import application.Things.Player;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
-//  private static ArrayList<KeyCode> activeKeys = new ArrayList<KeyCode>();
-//  private static Player player;
-
-  public Main() {}
-
   @Override
   public void start(Stage primaryStage) throws InterruptedException {
     primaryStage.setScene(startScreen(primaryStage));
     primaryStage.show();
   }
 
-  private void play(Stage primaryStage, boolean ray) {
-    if (ray) {
-      RayCaster RayCaster = new RayCaster();
-      RayCaster.setup(primaryStage);
-      primaryStage.show();
-      new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-          for (KeyCode key : activeKeys)
-            player.handleMovement(key);
-          primaryStage.setScene(RayCaster.buildScene());
-        }
-      }.start();
-    } else {
-      TwoDimensional TD = new TwoDimensional();
-      TD.setup(primaryStage);
-      primaryStage.show();
-      new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-          for (KeyCode key : activeKeys)
-            player.handleMovement(key);
-          primaryStage.setScene(TD.buildScene());
-        }
-      }.start();
-    }
+  private void play(Stage primaryStage, int dimension) {
+    Engine engine = new Engine(dimension, new Things(), primaryStage);
+    engine.start();
   }
 
   private Scene startScreen(Stage primaryStage) {
@@ -68,11 +35,11 @@ public class Main extends Application {
     button2d.setPrefSize(150, 150);
 
     button3d.setOnAction(e -> {
-      play(primaryStage, true);
+      play(primaryStage, 3);
     });
 
     button2d.setOnAction(e -> {
-      play(primaryStage, false);
+      play(primaryStage, 2);
     });
 
     grid.add(button3d, 0, 0);
@@ -86,18 +53,6 @@ public class Main extends Application {
     GridPane.setHalignment(options, HPos.CENTER);
     return new Scene(grid, 450, 300);
   }
-
-//  protected static void wireInput(Stage primaryStage, Player player) {
-//    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-//      KeyCode code = key.getCode();
-//      if (!activeKeys.contains(code))
-//        activeKeys.add(code);
-//    });
-//    primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (key) -> {
-//      activeKeys.remove(key.getCode());
-//    });
-//    Main.player = player;
-//  }
 
   public static void main(String[] args) {
     launch(args);
