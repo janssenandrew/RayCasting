@@ -19,6 +19,10 @@ public class Things {
   public Player getPlayer() {
     return player;
   }
+  
+  public void update(KeyCode key) {
+    player.handleMovement(key);
+  }
 
   public class Player {
     private double[] position;

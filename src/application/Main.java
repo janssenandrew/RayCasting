@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-  private static ArrayList<KeyCode> activeKeys = new ArrayList<KeyCode>();
-  private static Player player;
+//  private static ArrayList<KeyCode> activeKeys = new ArrayList<KeyCode>();
+//  private static Player player;
 
   public Main() {}
 
@@ -28,7 +28,7 @@ public class Main extends Application {
 
   private void play(Stage primaryStage, boolean ray) {
     if (ray) {
-      DDA RayCaster = new DDA();
+      RayCaster RayCaster = new RayCaster();
       RayCaster.setup(primaryStage);
       primaryStage.show();
       new AnimationTimer() {
@@ -87,17 +87,17 @@ public class Main extends Application {
     return new Scene(grid, 450, 300);
   }
 
-  protected static void wireInput(Stage primaryStage, Player player) {
-    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-      KeyCode code = key.getCode();
-      if (!activeKeys.contains(code))
-        activeKeys.add(code);
-    });
-    primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (key) -> {
-      activeKeys.remove(key.getCode());
-    });
-    Main.player = player;
-  }
+//  protected static void wireInput(Stage primaryStage, Player player) {
+//    primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+//      KeyCode code = key.getCode();
+//      if (!activeKeys.contains(code))
+//        activeKeys.add(code);
+//    });
+//    primaryStage.addEventHandler(KeyEvent.KEY_RELEASED, (key) -> {
+//      activeKeys.remove(key.getCode());
+//    });
+//    Main.player = player;
+//  }
 
   public static void main(String[] args) {
     launch(args);

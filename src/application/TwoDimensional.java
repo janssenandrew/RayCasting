@@ -11,7 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class TwoDimensional {
+public class TwoDimensional implements Renderer{
   private int screenWidth;
   private int screenHeight;
   int width;
