@@ -17,7 +17,7 @@ public class Main extends Application {
   }
 
   private void play(Stage primaryStage, int dimension) {
-    Engine engine = new Engine(dimension, new Things(), primaryStage);
+    Engine engine = new Engine(dimension, primaryStage);
     engine.start();
   }
 
