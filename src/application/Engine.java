@@ -29,17 +29,6 @@ public class Engine {
         return (double) (1000000000 / (elapsed / times.length));
       }
       return 0;
-      // long oldFrameTime = frameTimes[frameTimeIndex] ;
-      // frameTimes[frameTimeIndex] = now ;
-      // frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length ;
-      // if (frameTimeIndex == 0) {
-      // arrayFilled = true ;
-      // }
-      // if (arrayFilled) {
-      // long elapsedNanos = now - oldFrameTime ;
-      // long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
-      // double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
-      // label.setText(String.format("Current frame rate: %.3f", frameRate));
     }
   }
 
