@@ -33,16 +33,16 @@ public class RayCaster implements Renderer {
     direction = player.getDirection();
     screen = player.getScreen();
     Group group = new Group();
-    Group group2 = new Group();
+//    Group group2 = new Group();
     StackPane stack = new StackPane();
-    Rectangle rect = new Rectangle(800, 450, 1600, 450);
-    rect.setStroke(Color.BLACK);
-
-    Rectangle rect2 = new Rectangle(800, 0, 1600, 450);
-    rect2.setStroke(Color.BLUE);
-    group2.getChildren().addAll(rect, rect2);
-
-    stack.getChildren().add(group2);
+//    Rectangle rect = new Rectangle(800, 450, 1600, 450);
+//    rect.setStroke(Color.BLACK);
+//
+//    Rectangle rect2 = new Rectangle(800, 0, 1600, 450);
+//    rect2.setStroke(Color.BLUE);
+//    group2.getChildren().addAll(rect, rect2);
+//
+//    stack.getChildren().add(group2);
 
     double cameraPosition;
     double xRayDirection;
