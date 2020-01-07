@@ -34,7 +34,7 @@ public class Things {
     public Player(Map map) {
       position = new double[] {12, 12};
       direction = new double[] {1, 0};
-      screen = new double[] {0, .66};
+      screen = new double[] {0, .67};
       speed = new double[] {0, 0};
       this.map = map;
     }
@@ -189,6 +189,10 @@ public class Things {
         default:
           return Color.BLACK;
       }
+    }
+    
+    public int[][] getTexture(int i, int j) {
+      return null;
     }
 
     public boolean isCollision(int i, int j) {
