@@ -11,7 +11,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Line;
 
 public class RayCaster implements Renderer {
-
   private static final int SCREEN_WIDTH = 1024;
   private static final int SCREEN_HEIGHT = 576;
   private double[] position;
@@ -19,7 +18,6 @@ public class RayCaster implements Renderer {
   private double[] screen;
   private final int[][] map;
   private Things things;
-
   private Textures textures;
   private int[] pixels;
   private int textureWidth = 64;
@@ -38,8 +36,10 @@ public class RayCaster implements Renderer {
   }
 
   public Scene buildScene() {
-    for (int i = 0; i < pixels.length; i++)
-      pixels[i] = -11393254;
+    for (int i = 0; i < pixels.length / 2; i++)
+      pixels[i] = (255 & 0xff) << 24 | (102 & 0xff) << 16 | (178 & 0xff) << 8 | (255 & 0xff);
+    for (int i = pixels.length / 2; i < pixels.length; i++)
+      pixels[i] = (255 & 0xff) << 24 | (96 & 0xff) << 16 | (96 & 0xff) << 8 | (96 & 0xff);
 
     position = player.getPosition();
     direction = player.getDirection();
@@ -58,7 +58,6 @@ public class RayCaster implements Renderer {
       double xDelta = Math.abs(1 / xRayDirection);
       double yDelta = Math.abs(1 / yRayDirection);
       double distance;
-
 
       // step direction
       int xStep;
@@ -112,11 +111,6 @@ public class RayCaster implements Renderer {
         textureColumn = textureWidth - textureColumn - 1;
 
       drawTexture(column, wallHeight, side, textureColumn, textureNumber);
-
-      // if (side != 0)
-      // color = color.darker();
-      // line.setStroke(color);
-      // group.getChildren().add(line);
     }
 
     WritableImage image = new WritableImage(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -128,9 +122,9 @@ public class RayCaster implements Renderer {
     gr.getChildren().add(img);
     img.setImage(image);
     return new Scene(gr, SCREEN_WIDTH, SCREEN_HEIGHT);
-
   }
 
+  @Deprecated
   private Line drawLine(double column, int wallHeight) {
     int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
     if (lineStart < 0)
@@ -157,6 +151,14 @@ public class RayCaster implements Renderer {
       texPos += step;
       int color = textures.getTexture(textureNumber - 1).getPixels()[textureWidth * textureRow
           + textureColumn];
+      if (side == 1) {
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = (color) & 0xFF;
+        color = (alpha & 0xff) << 24 | (red * 2 / 3 & 0xff) << 16 | (green * 2 / 3 & 0xff) << 8
+            | (blue * 2 / 3 & 0xff);
+      }
       pixels[SCREEN_WIDTH * row + (int) column] = color;
     }
   }
