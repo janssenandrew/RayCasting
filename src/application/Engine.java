@@ -1,9 +1,12 @@
 package application;
 
+import java.awt.MouseInfo;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 
 public class Engine {
@@ -26,7 +29,6 @@ public class Engine {
       times[timesIndex] = now;
       long elapsed = now - prev;
 
-      System.out.println(now);
       long delta = now - previous;
       previous = now;
 
@@ -94,10 +96,22 @@ public class Engine {
       public void handle(long now) {
         perf = fps.nextFrame(now);
         primaryStage.setTitle(perf[1] + " fps");
+        // things.getPlayer().handleLook(MouseInfo.getPointerInfo().getLocation());
         for (KeyCode key : activeKeys)
-          things.getPlayer().handleMovement(key, perf[0]);
+          things.getPlayer().handleMovement(key, perf[0], primaryStage);
         primaryStage.setScene(renderer.buildScene());
       }
     }.start();
+  }
+
+  public void moveCursor(int screenX, int screenY) {
+    Platform.runLater(() -> {
+      try {
+        Robot robot = new Robot();
+        robot.mouseMove(screenX, screenY);
+      } catch (Exception e) {
+        // e.printStackTrace();
+      }
+    });
   }
 }

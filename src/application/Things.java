@@ -1,7 +1,9 @@
 package application;
 
+import java.awt.Point;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class Things {
   Player player;
@@ -95,7 +97,7 @@ public class Things {
       screen[1] = y;
     }
 
-    public void handleMovement(KeyCode key, double elapsed) {
+    public void handleMovement(KeyCode key, double elapsed, Stage primaryStage) {
       double ratio = elapsed / 10;
       switch (key) {
         case UP:
@@ -110,9 +112,17 @@ public class Things {
         case RIGHT:
           rotate(1 * ratio);
           break;
+        case ESCAPE:
+          primaryStage.close();
+          break;
         default:
           break;
       }
+    }
+
+    public void handleLook(Point p) {
+      double deltaX = p.getX() - 960;
+      rotate(deltaX / 10);
     }
   }
   public class Map {
