@@ -20,10 +20,6 @@ public class Things {
     return player;
   }
 
-  public void update(KeyCode key) {
-    player.handleMovement(key);
-  }
-
   public class Player {
     private double[] position;
     private double[] direction;
@@ -99,21 +95,20 @@ public class Things {
       screen[1] = y;
     }
 
-    public void handleMovement(KeyCode key) {
-      // System.out.println("Hello");
+    public void handleMovement(KeyCode key, double elapsed) {
+      double ratio = elapsed / 10;
       switch (key) {
         case UP:
-          // System.out.println("up");
-          move(1, .02);
+          move(1, .02 * ratio);
           break;
         case DOWN:
-          move(-1, .02);
+          move(-1, .02 * ratio);
           break;
         case LEFT:
-          rotate(-1);
+          rotate(-1 * ratio);
           break;
         case RIGHT:
-          rotate(1);
+          rotate(1 * ratio);
           break;
         default:
           break;

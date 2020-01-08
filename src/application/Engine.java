@@ -12,23 +12,38 @@ public class Engine {
     private int timesIndex;
     private boolean fullArray;
 
+    private long previous;
+
     public FramesPerSecond() {
       times = new long[100];
       timesIndex = 0;
       fullArray = false;
+      previous = 100000000000000L;
     }
 
-    public double nextFrame(long now) {
+    public double[] nextFrame(long now) {
       long prev = times[timesIndex];
       times[timesIndex] = now;
+      long elapsed = now - prev;
+
+      System.out.println(now);
+      long delta = now - previous;
+      previous = now;
+
+      double fps = 0;
       timesIndex = (timesIndex + 1) % times.length;
       if (timesIndex == 0)
         fullArray = true;
       if (fullArray) {
-        long elapsed = now - prev;
-        return (double) (1000000000 / (elapsed / times.length));
+        fps = (double) (1000000000 / (elapsed / times.length));
       }
-      return 0;
+      return new double[] {delta / 1000000, fps};
+    }
+
+    public double calculateElapsed(long now) {
+      double elapsed = now - previous;
+      previous = now;
+      return 1000000000 / elapsed;
     }
   }
 
@@ -37,7 +52,7 @@ public class Engine {
   Stage primaryStage;
   private static ArrayList<KeyCode> activeKeys;
   private FramesPerSecond fps;
-  private double perf;
+  private double[] perf;
 
   public Engine(int dimension, Things things, Stage primaryStage) {
     switch (dimension) {
@@ -78,9 +93,9 @@ public class Engine {
       @Override
       public void handle(long now) {
         perf = fps.nextFrame(now);
-        primaryStage.setTitle(perf + " fps");
+        primaryStage.setTitle(perf[1] + " fps");
         for (KeyCode key : activeKeys)
-          things.getPlayer().handleMovement(key);
+          things.getPlayer().handleMovement(key, perf[0]);
         primaryStage.setScene(renderer.buildScene());
       }
     }.start();
