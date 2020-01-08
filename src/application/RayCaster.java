@@ -108,10 +108,20 @@ public class RayCaster implements Renderer {
       Line line = drawLine(column, wallHeight);
       Color color = mapObject.getColor(ySquare, xSquare);
 
+
+
       int texture = map[ySquare][xSquare];
       double wall = (side == 0) ? position[1] + distance * yRayDirection
           : position[0] + distance * xRayDirection;
       wall -= Math.floor((wall));
+
+      int textureColumn = (int) (wall * (double) texWidth);
+      if (side == 0 && xRayDirection > 0)
+        textureColumn = texWidth - textureColumn - 1;
+      if (side == 1 && yRayDirection < 0)
+        textureColumn = texWidth - textureColumn - 1;
+      
+      
 
       if (side != 0)
         color = color.darker();

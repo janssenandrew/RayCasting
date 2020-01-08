@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Arrays;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -14,6 +15,10 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws InterruptedException {
     primaryStage.setScene(startScreen(primaryStage));
     primaryStage.show();
+    
+    Textures textures = new Textures();
+    System.out.println(textures.getTexture(0).getPixels().length);
+    System.out.println(Arrays.toString(textures.getTexture(0).getPixels()));
   }
 
   private void play(Stage primaryStage, int dimension) {

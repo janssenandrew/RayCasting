@@ -190,7 +190,7 @@ public class Things {
           return Color.BLACK;
       }
     }
-    
+
     public int[][] getTexture(int i, int j) {
       return null;
     }

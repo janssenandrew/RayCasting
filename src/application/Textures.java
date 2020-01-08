@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Textures {
-  private class Texture {
+  protected class Texture {
     private BufferedImage tex;
     private int[] pixels;
     private String path;
@@ -25,18 +25,39 @@ public class Textures {
         e.printStackTrace();
       }
     }
+
+    public int[] getPixels() {
+      return pixels;
+    }
+
+    public BufferedImage getTexture() {
+      return tex;
+    }
+
+    public int getWidth() {
+      return width;
+    }
+
+    public int getHeight() {
+      return height;
+    }
   }
 
   private ArrayList<Texture> textures;
-  private final String[] paths = {"brick-wall.jpg"};
+  private final String[] paths = {"bricks.png"};
 
   public Textures() {
-    createTextures();
+    textures = new ArrayList<Texture>();
+    createTextures(paths);
   }
 
-  private void createTextures() {
-    for (String str : paths) {
-      textures.add(new Texture(str));
+  private void createTextures(String[] pathList) {
+    for (String str : pathList) {
+      textures.add(new Texture("assets/" + str));
     }
+  }
+
+  public Texture getTexture(int index) {
+    return textures.get(index);
   }
 }
