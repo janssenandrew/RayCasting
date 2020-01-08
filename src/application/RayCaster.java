@@ -11,8 +11,8 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Line;
 
 public class RayCaster implements Renderer {
-  private static final int SCREEN_WIDTH = 1024;
-  private static final int SCREEN_HEIGHT = 576;
+  private int screenWidth = 1024;
+  private int screenHeight = 576;
   private double[] position;
   private double[] direction;
   private double[] screen;
@@ -32,7 +32,14 @@ public class RayCaster implements Renderer {
     map = mapObject.getMap();
     player = this.things.getPlayer();
     textures = new Textures();
-    pixels = new int[SCREEN_WIDTH * SCREEN_HEIGHT];
+    pixels = new int[screenWidth * screenHeight];
+  }
+
+  public RayCaster(Things things, int width, int height) {
+    this(things);
+    screenWidth = width;
+    screenHeight = height;
+    pixels = new int[screenWidth * screenHeight];
   }
 
   public Scene buildScene() {
@@ -50,8 +57,8 @@ public class RayCaster implements Renderer {
     double yRayDirection;
     double xSideDist;
     double ySideDist;
-    for (double column = 0; column < SCREEN_WIDTH; column++) {
-      cameraPosition = ((2 * column) / (double) SCREEN_WIDTH) - 1;
+    for (double column = 0; column < screenWidth; column++) {
+      cameraPosition = ((2 * column) / (double) screenWidth) - 1;
       xRayDirection = direction[0] + screen[0] * cameraPosition;
       yRayDirection = direction[1] + screen[1] * cameraPosition;
 
@@ -97,7 +104,7 @@ public class RayCaster implements Renderer {
       }
       distance = (side == 0) ? ((double) xSquare - position[0] + ((1 - xStep) / 2)) / xRayDirection
           : (double) (ySquare - position[1] + ((1 - yStep) / 2)) / yRayDirection;
-      int wallHeight = (int) (SCREEN_HEIGHT / distance);
+      int wallHeight = (int) (screenHeight / distance);
 
       int textureNumber = map[ySquare][xSquare];
       double wall = (side == 0) ? position[1] + distance * yRayDirection
@@ -113,39 +120,39 @@ public class RayCaster implements Renderer {
       drawTexture(column, wallHeight, side, textureColumn, textureNumber);
     }
 
-    WritableImage image = new WritableImage(SCREEN_WIDTH, SCREEN_HEIGHT);
+    WritableImage image = new WritableImage(screenWidth, screenHeight);
     PixelWriter pw = image.getPixelWriter();
-    pw.setPixels(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PixelFormat.getIntArgbInstance(), pixels, 0,
-        SCREEN_WIDTH);
+    pw.setPixels(0, 0, screenWidth, screenHeight, PixelFormat.getIntArgbInstance(), pixels, 0,
+        screenWidth);
     ImageView img = new ImageView();
     Group gr = new Group();
     gr.getChildren().add(img);
     img.setImage(image);
-    return new Scene(gr, SCREEN_WIDTH, SCREEN_HEIGHT);
+    return new Scene(gr, screenWidth, screenHeight);
   }
 
   @Deprecated
   private Line drawLine(double column, int wallHeight) {
-    int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
+    int lineStart = -wallHeight / 2 + screenHeight / 2;
     if (lineStart < 0)
       lineStart = 0;
-    int lineEnd = wallHeight / 2 + SCREEN_HEIGHT / 2;
-    if (lineEnd >= SCREEN_HEIGHT)
-      lineEnd = SCREEN_HEIGHT - 1;
+    int lineEnd = wallHeight / 2 + screenHeight / 2;
+    if (lineEnd >= screenHeight)
+      lineEnd = screenHeight - 1;
     return new Line(column, lineStart, column, lineEnd);
   }
 
   private void drawTexture(double column, int wallHeight, int side, int textureColumn,
       int textureNumber) {
-    int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
+    int lineStart = -wallHeight / 2 + screenHeight / 2;
     if (lineStart < 0)
       lineStart = 0;
-    int lineEnd = wallHeight / 2 + SCREEN_HEIGHT / 2;
-    if (lineEnd >= SCREEN_HEIGHT)
-      lineEnd = SCREEN_HEIGHT - 1;
+    int lineEnd = wallHeight / 2 + screenHeight / 2;
+    if (lineEnd >= screenHeight)
+      lineEnd = screenHeight - 1;
 
     double step = 1.0 * textureHeight / wallHeight;
-    double texPos = (lineStart - SCREEN_HEIGHT / 2 + wallHeight / 2) * step;
+    double texPos = (lineStart - screenHeight / 2 + wallHeight / 2) * step;
     for (int row = lineStart; row < lineEnd; row++) {
       int textureRow = (int) texPos & (textureHeight - 1);
       texPos += step;
@@ -159,7 +166,7 @@ public class RayCaster implements Renderer {
         color = (alpha & 0xff) << 24 | (red * 2 / 3 & 0xff) << 16 | (green * 2 / 3 & 0xff) << 8
             | (blue * 2 / 3 & 0xff);
       }
-      pixels[SCREEN_WIDTH * row + (int) column] = color;
+      pixels[screenWidth * row + (int) column] = color;
     }
   }
 }
