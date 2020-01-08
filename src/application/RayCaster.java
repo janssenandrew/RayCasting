@@ -1,6 +1,5 @@
 package application;
 
-import java.util.ArrayList;
 import application.Things.Map;
 import application.Things.Player;
 import javafx.scene.Group;
@@ -9,12 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class RayCaster implements Renderer {
-  private static final String path = "file:assets/brick-wall.jpg";
 
   private static final int SCREEN_WIDTH = 1024;
   private static final int SCREEN_HEIGHT = 576;
@@ -43,21 +39,11 @@ public class RayCaster implements Renderer {
 
   public Scene buildScene() {
     for (int i = 0; i < pixels.length; i++)
-      pixels[i] = 0;
+      pixels[i] = -11393254;
 
     position = player.getPosition();
     direction = player.getDirection();
     screen = player.getScreen();
-    Group group = new Group();
-    StackPane stack = new StackPane();
-
-
-
-    // Image img = new Image(path);
-    // WritableImage wi = new WritableImage(SCREEN_WIDTH, SCREEN_HEIGHT);
-    // ImageView iv = new ImageView();
-    // iv.setImage(img);
-    // stack.getChildren().add(iv);
 
     double cameraPosition;
     double xRayDirection;
@@ -114,7 +100,7 @@ public class RayCaster implements Renderer {
           : (double) (ySquare - position[1] + ((1 - yStep) / 2)) / yRayDirection;
       int wallHeight = (int) (SCREEN_HEIGHT / distance);
 
-      int texture = map[ySquare][xSquare];
+      int textureNumber = map[ySquare][xSquare];
       double wall = (side == 0) ? position[1] + distance * yRayDirection
           : position[0] + distance * xRayDirection;
       wall -= Math.floor((wall));
@@ -125,7 +111,7 @@ public class RayCaster implements Renderer {
       if (side == 1 && yRayDirection < 0)
         textureColumn = textureWidth - textureColumn - 1;
 
-      drawTexture(column, wallHeight, side, textureColumn);
+      drawTexture(column, wallHeight, side, textureColumn, textureNumber);
 
       // if (side != 0)
       // color = color.darker();
@@ -155,7 +141,8 @@ public class RayCaster implements Renderer {
     return new Line(column, lineStart, column, lineEnd);
   }
 
-  private void drawTexture(double column, int wallHeight, int side, int textureColumn) {
+  private void drawTexture(double column, int wallHeight, int side, int textureColumn,
+      int textureNumber) {
     int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
     if (lineStart < 0)
       lineStart = 0;
@@ -168,7 +155,8 @@ public class RayCaster implements Renderer {
     for (int row = lineStart; row < lineEnd; row++) {
       int textureRow = (int) texPos & (textureHeight - 1);
       texPos += step;
-      int color = textures.getTexture(0).getPixels()[textureWidth * textureRow + textureColumn];
+      int color = textures.getTexture(textureNumber - 1).getPixels()[textureWidth * textureRow
+          + textureColumn];
       pixels[SCREEN_WIDTH * row + (int) column] = color;
     }
   }

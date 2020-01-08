@@ -10,12 +10,10 @@ public class Textures {
   protected class Texture {
     private BufferedImage tex;
     private int[] pixels;
-    private String path;
     private int width;
     private int height;
 
     public Texture(String path) {
-      this.path = path;
       try {
         tex = ImageIO.read(new File(path));
         width = tex.getWidth();
@@ -44,7 +42,8 @@ public class Textures {
   }
 
   private ArrayList<Texture> textures;
-  private final String[] paths = {"bricks.png"};
+  private final String[] paths = {"bricks.png", "chestsides.png", "slate.png", "walkstone.png",
+      "bookshelf.png", "redbricks.png", "stone.png"};
 
   public Textures() {
     textures = new ArrayList<Texture>();
