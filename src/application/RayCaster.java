@@ -1,11 +1,13 @@
 package application;
 
+import java.util.ArrayList;
 import application.Things.Map;
 import application.Things.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -22,8 +24,10 @@ public class RayCaster implements Renderer {
   private final int[][] map;
   private Things things;
 
-  private int texWidth = 64;
-  private int texHeight = 64;
+  private Textures textures;
+  private int[] pixels;
+  private int textureWidth = 64;
+  private int textureHeight = 64;
 
   private Player player;
   Map mapObject;
@@ -33,9 +37,14 @@ public class RayCaster implements Renderer {
     mapObject = this.things.getMap();
     map = mapObject.getMap();
     player = this.things.getPlayer();
+    textures = new Textures();
+    pixels = new int[SCREEN_WIDTH * SCREEN_HEIGHT];
   }
 
   public Scene buildScene() {
+    for (int i = 0; i < pixels.length; i++)
+      pixels[i] = 0;
+
     position = player.getPosition();
     direction = player.getDirection();
     screen = player.getScreen();
@@ -105,31 +114,35 @@ public class RayCaster implements Renderer {
           : (double) (ySquare - position[1] + ((1 - yStep) / 2)) / yRayDirection;
       int wallHeight = (int) (SCREEN_HEIGHT / distance);
 
-      Line line = drawLine(column, wallHeight);
-      Color color = mapObject.getColor(ySquare, xSquare);
-
-
-
       int texture = map[ySquare][xSquare];
       double wall = (side == 0) ? position[1] + distance * yRayDirection
           : position[0] + distance * xRayDirection;
       wall -= Math.floor((wall));
 
-      int textureColumn = (int) (wall * (double) texWidth);
+      int textureColumn = (int) (wall * (double) textureWidth);
       if (side == 0 && xRayDirection > 0)
-        textureColumn = texWidth - textureColumn - 1;
+        textureColumn = textureWidth - textureColumn - 1;
       if (side == 1 && yRayDirection < 0)
-        textureColumn = texWidth - textureColumn - 1;
-      
-      
+        textureColumn = textureWidth - textureColumn - 1;
 
-      if (side != 0)
-        color = color.darker();
-      line.setStroke(color);
-      group.getChildren().add(line);
+      drawTexture(column, wallHeight, side, textureColumn);
+
+      // if (side != 0)
+      // color = color.darker();
+      // line.setStroke(color);
+      // group.getChildren().add(line);
     }
-    stack.getChildren().add(group);
-    return new Scene(stack, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    WritableImage image = new WritableImage(SCREEN_WIDTH, SCREEN_HEIGHT);
+    PixelWriter pw = image.getPixelWriter();
+    pw.setPixels(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PixelFormat.getIntArgbInstance(), pixels, 0,
+        SCREEN_WIDTH);
+    ImageView img = new ImageView();
+    Group gr = new Group();
+    gr.getChildren().add(img);
+    img.setImage(image);
+    return new Scene(gr, SCREEN_WIDTH, SCREEN_HEIGHT);
+
   }
 
   private Line drawLine(double column, int wallHeight) {
@@ -142,7 +155,21 @@ public class RayCaster implements Renderer {
     return new Line(column, lineStart, column, lineEnd);
   }
 
-  private void drawTexture(double column, int wallHeight) {
+  private void drawTexture(double column, int wallHeight, int side, int textureColumn) {
+    int lineStart = -wallHeight / 2 + SCREEN_HEIGHT / 2;
+    if (lineStart < 0)
+      lineStart = 0;
+    int lineEnd = wallHeight / 2 + SCREEN_HEIGHT / 2;
+    if (lineEnd >= SCREEN_HEIGHT)
+      lineEnd = SCREEN_HEIGHT - 1;
 
+    double step = 1.0 * textureHeight / wallHeight;
+    double texPos = (lineStart - SCREEN_HEIGHT / 2 + wallHeight / 2) * step;
+    for (int row = lineStart; row < lineEnd; row++) {
+      int textureRow = (int) texPos & (textureHeight - 1);
+      texPos += step;
+      int color = textures.getTexture(0).getPixels()[textureWidth * textureRow + textureColumn];
+      pixels[SCREEN_WIDTH * row + (int) column] = color;
+    }
   }
 }
