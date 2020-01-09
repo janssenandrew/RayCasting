@@ -125,13 +125,9 @@ public class Things {
       rotate(deltaX / 10);
     }
   }
-  public class Map {
-    private static final int WIDTH = 25;
-
-
-
-    private static final int HEIGHT = 25;
-    private final int[][] map1 =
+  public static class Map {
+    private static final String[] mapPaths = {"map2"};
+    private static final int[][] map1 =
         {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -157,26 +153,38 @@ public class Things {
             {1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 7, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
-    private int[][] map;
+    private int[][] currentMap;
+    private int mapWidth;
+    private int mapHeight;
 
     public Map() {
-      map = map1;
+      currentMap = map1;
+      int[] dim = calculateDimensions(currentMap);
+      mapWidth = dim[0];
+      mapHeight = dim[1];
+    }
+
+    private int[] calculateDimensions(int[][] map) {
+      int maxWidth = 0;
+      for (int i = 0; i < map.length; i++)
+        maxWidth = (map[i].length > maxWidth) ? map[i].length : maxWidth;
+      return new int[] {maxWidth, map.length};
     }
 
     public int[][] getMap() {
-      return map;
+      return currentMap;
     }
 
     public int getWidth() {
-      return WIDTH;
+      return mapWidth;
     }
 
     public int getHeight() {
-      return HEIGHT;
+      return mapHeight;
     }
 
     public Color getColor(int i, int j) {
-      switch (map[i][j]) {
+      switch (currentMap[i][j]) {
         case 1:
           return Color.GREY;
         case 2:
@@ -201,7 +209,7 @@ public class Things {
     }
 
     public boolean isCollision(int i, int j) {
-      return map[i][j] == 0;
+      return currentMap[i][j] == 0;
     }
   }
 }
