@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.MouseInfo;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
