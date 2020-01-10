@@ -17,14 +17,22 @@ public class TwoDimensional implements Renderer {
   int height;
   private Player player;
   private Map mapObject;
+  private int scale;
 
   public TwoDimensional(Things things) {
     mapObject = things.getMap();
     player = things.getPlayer();
     width = mapObject.getWidth();
     height = mapObject.getHeight();
-    screenWidth = 20 * width;
-    screenHeight = 20 * height;
+    scale = getScale();
+    screenWidth = scale * width;
+    screenHeight = scale * height;
+  }
+
+  private int getScale() {
+    int x = 1920 / width / 2;
+    int y = 1080 / height / 2;
+    return Math.min(x, y);
   }
 
   public Scene buildScene() {
@@ -32,8 +40,8 @@ public class TwoDimensional implements Renderer {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         Rectangle rect = new Rectangle();
-        rect.setWidth(20);
-        rect.setHeight(20);
+        rect.setWidth(scale);
+        rect.setHeight(scale);
         rect.setFill(mapObject.getColor(i, j));
         grid.add(rect, j, i);
       }
@@ -41,9 +49,10 @@ public class TwoDimensional implements Renderer {
     StackPane stack = new StackPane();
     Group group = new Group();
     Line line = new Line(0, 0, 500, 500);
-    Line look = new Line(player.getPosition()[0] * 20, player.getPosition()[1] * 20,
-        (player.getPosition()[0] + player.getDirection()[0]) * 20,
-        (player.getPosition()[1] + player.getDirection()[1]) * 20);
+    System.out.println(player.getPosition()[0]);
+    Line look = new Line(player.getPosition()[0] * scale, player.getPosition()[1] * scale,
+        (player.getPosition()[0] + player.getDirection()[0]) * scale,
+        (player.getPosition()[1] + player.getDirection()[1]) * scale);
     line.setStroke(Color.TRANSPARENT);
     look.setStroke(Color.YELLOW);
     group.getChildren().addAll(line, look);

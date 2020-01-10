@@ -52,7 +52,7 @@ public class Textures {
 
   private void createTextures(String[] pathList) {
     for (String str : pathList) {
-      textures.add(new Texture("assets/" + str));
+      textures.add(new Texture("assets/textures/" + str));
     }
   }
 

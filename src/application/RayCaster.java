@@ -44,7 +44,7 @@ public class RayCaster implements Renderer {
 
   public Scene buildScene() {
     for (int i = 0; i < pixels.length / 2; i++)
-      //pixels[i] = (255 & 0xff) << 24 | (102 & 0xff) << 16 | (178 & 0xff) << 8 | (255 & 0xff);
+      // pixels[i] = (255 & 0xff) << 24 | (102 & 0xff) << 16 | (178 & 0xff) << 8 | (255 & 0xff);
       pixels[i] = (255 & 0xff) << 24 | (30 & 0xff) << 16 | (30 & 0xff) << 8 | (30 & 0xff);
     for (int i = pixels.length / 2; i < pixels.length; i++)
       pixels[i] = (255 & 0xff) << 24 | (96 & 0xff) << 16 | (96 & 0xff) << 8 | (96 & 0xff);
