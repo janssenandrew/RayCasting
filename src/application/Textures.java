@@ -44,15 +44,20 @@ public class Textures {
   private ArrayList<Texture> textures;
   private final String[] paths = {"bricks.png", "chestsides.png", "slate.png", "walkstone.png",
       "bookshelf.png", "redbricks.png", "stone.png"};
+  private final String[] paths2 = {"stonewall.jpg", "wood.jpg", "squarebrick.jpg", "cobble.jpg",
+      "box.jpg", "redbricks.jpg", "darkwood.jpg"};
 
-  public Textures() {
+  public Textures(boolean highRes) {
     textures = new ArrayList<Texture>();
-    createTextures(paths);
+    if (highRes)
+      createTextures(paths2, "highres/");
+    else
+      createTextures(paths, "");
   }
 
-  private void createTextures(String[] pathList) {
+  private void createTextures(String[] pathList, String prefix) {
     for (String str : pathList) {
-      textures.add(new Texture("assets/textures/" + str));
+      textures.add(new Texture("assets/textures/" + prefix + str));
     }
   }
 

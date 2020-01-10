@@ -61,7 +61,7 @@ public class Engine {
         renderer = new TwoDimensional(things);
         break;
       case 3:
-        renderer = new RayCaster(things);
+        renderer = new RayCaster(things, 1600, 900, true);
         break;
       default:
         break;

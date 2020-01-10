@@ -29,12 +29,16 @@ public class RayCaster implements Renderer {
     mapObject = this.things.getMap();
     map = mapObject.getMap();
     player = this.things.getPlayer();
-    textures = new Textures();
+    textures = new Textures(false);
     pixels = new int[screenWidth * screenHeight];
   }
 
-  public RayCaster(Things things, int width, int height) {
-    this(things);
+  public RayCaster(Things things, int width, int height, boolean highRes) {
+    this.things = things;
+    mapObject = this.things.getMap();
+    map = mapObject.getMap();
+    player = this.things.getPlayer();
+    textures = new Textures(true);
     screenWidth = width;
     screenHeight = height;
     pixels = new int[screenWidth * screenHeight];

@@ -49,7 +49,6 @@ public class TwoDimensional implements Renderer {
     StackPane stack = new StackPane();
     Group group = new Group();
     Line line = new Line(0, 0, 500, 500);
-    System.out.println(player.getPosition()[0]);
     Line look = new Line(player.getPosition()[0] * scale, player.getPosition()[1] * scale,
         (player.getPosition()[0] + player.getDirection()[0]) * scale,
         (player.getPosition()[1] + player.getDirection()[1]) * scale);
