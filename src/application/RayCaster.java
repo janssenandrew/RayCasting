@@ -20,8 +20,6 @@ public class RayCaster implements Renderer {
   private Things things;
   private Textures textures;
   private int[] pixels;
-  private int textureWidth = 64;
-  private int textureHeight = 64;
 
   private Player player;
   Map mapObject;
@@ -112,6 +110,7 @@ public class RayCaster implements Renderer {
           : position[0] + distance * xRayDirection;
       wall -= Math.floor((wall));
 
+      int textureWidth = textures.getTexture(textureNumber - 1).getWidth();
       int textureColumn = (int) (wall * (double) textureWidth);
       if (side == 0 && xRayDirection > 0)
         textureColumn = textureWidth - textureColumn - 1;
@@ -145,6 +144,8 @@ public class RayCaster implements Renderer {
 
   private void drawTexture(double column, int wallHeight, int side, int textureColumn,
       int textureNumber) {
+    int textureWidth = textures.getTexture(textureNumber - 1).getWidth();
+    int textureHeight = textures.getTexture(textureNumber - 1).getHeight();
     int lineStart = -wallHeight / 2 + screenHeight / 2;
     if (lineStart < 0)
       lineStart = 0;
