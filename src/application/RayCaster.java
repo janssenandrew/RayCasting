@@ -20,7 +20,6 @@ public class RayCaster implements Renderer {
   private Things things;
   private Textures textures;
   private int[] pixels;
-
   private Player player;
   Map mapObject;
 

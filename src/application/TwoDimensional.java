@@ -4,6 +4,10 @@ import application.Things.Map;
 import application.Things.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -17,16 +21,24 @@ public class TwoDimensional implements Renderer {
   int height;
   private Player player;
   private Map mapObject;
+  private int[][] map;
   private int scale;
 
+  private Things things;
+  // private Textures textures;
+  private int[] pixels;
+
   public TwoDimensional(Things things) {
-    mapObject = things.getMap();
-    player = things.getPlayer();
+    this.things = things;
+    mapObject = this.things.getMap();
+    map = mapObject.getMap();
+    player = this.things.getPlayer();
     width = mapObject.getWidth();
     height = mapObject.getHeight();
     scale = getScale();
     screenWidth = scale * width;
     screenHeight = scale * height;
+    pixels = new int[screenWidth * screenHeight];
   }
 
   private int getScale() {
@@ -35,7 +47,7 @@ public class TwoDimensional implements Renderer {
     return Math.min(x, y);
   }
 
-  public Scene buildScene() {
+  public Scene buildScene2() {
     GridPane grid = new GridPane();
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -58,5 +70,37 @@ public class TwoDimensional implements Renderer {
     stack.getChildren().addAll(grid, group);
     Scene scene = new Scene(stack, screenWidth, screenHeight);
     return scene;
+  }
+
+  public Scene buildScene() {
+    for (int row = 0; row < height; row++) {
+      for (int column = 0; column < map[row].length; column++) {
+        buildSquare(row, column);
+      }
+    }
+    WritableImage image = new WritableImage(screenWidth, screenHeight);
+    PixelWriter pw = image.getPixelWriter();
+    pw.setPixels(0, 0, screenWidth, screenHeight, PixelFormat.getIntArgbInstance(), pixels, 0,
+        screenWidth);
+    ImageView img = new ImageView();
+    Group gr = new Group();
+    gr.getChildren().add(img);
+    img.setImage(image);
+    return new Scene(gr, screenWidth, screenHeight);
+  }
+
+  private void buildSquare(int row, int column) {
+    Color color = mapObject.getColor(row, column);
+    int startX = column * scale;
+    int startY = row * scale;
+    int endX = (column + 1) * scale;
+    int endY = (row + 1) * scale;
+    for (int x = startX; x < endX; x++) {
+      for (int y = startY; y < endY; y++) {
+        pixels[y * screenWidth + x] = ((int) (255 * color.getBrightness()) & 0xff) << 24
+            | ((int) (255 * color.getRed()) & 0xff) << 16
+            | ((int) (255 * color.getGreen()) & 0xff << 8) | ((int) (255 * color.getBlue()) & 0xff);
+      }
+    }
   }
 }
