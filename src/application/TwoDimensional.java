@@ -78,6 +78,7 @@ public class TwoDimensional implements Renderer {
         buildSquare(row, column);
       }
     }
+    buildPlayer(player.getPosition(), player.getDirection());
     WritableImage image = new WritableImage(screenWidth, screenHeight);
     PixelWriter pw = image.getPixelWriter();
     pw.setPixels(0, 0, screenWidth, screenHeight, PixelFormat.getIntArgbInstance(), pixels, 0,
@@ -97,10 +98,22 @@ public class TwoDimensional implements Renderer {
     int endY = (row + 1) * scale;
     for (int x = startX; x < endX; x++) {
       for (int y = startY; y < endY; y++) {
-        pixels[y * screenWidth + x] = ((int) (255 * color.getBrightness()) & 0xff) << 24
-            | ((int) (255 * color.getRed()) & 0xff) << 16
-            | ((int) (255 * color.getGreen()) & 0xff << 8) | ((int) (255 * color.getBlue()) & 0xff);
+        pixels[y * screenWidth + x] =
+            (255 & 0xff) << 24 | (((int) (255 * color.getRed())) & 0xff) << 16
+                | (((int) (255 * color.getGreen())) & 0xff) << 8
+                | (((int) (255 * color.getBlue())) & 0xff);
       }
     }
+  }
+
+  private void buildPlayer(double[] position, double[] direction) {
+    int startX = (int) (position[0] * scale);
+    int startY = (int) (position[1] * scale);
+    int endX = startX + (int) (direction[0] * scale);
+    int endY = startY + (int) (direction[1] * scale);
+    pixels[startY * screenWidth + startX] =
+        (255 & 0xff) << 24 | (96 & 0xff) << 16 | (96 & 0xff) << 8 | (96 & 0xff);
+    pixels[endY * screenWidth + endX] =
+        (255 & 0xff) << 24 | (96 & 0xff) << 16 | (96 & 0xff) << 8 | (96 & 0xff);
   }
 }
