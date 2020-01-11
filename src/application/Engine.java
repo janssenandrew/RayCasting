@@ -61,7 +61,7 @@ public class Engine {
         renderer = new TwoDimensional(things);
         break;
       case 3:
-        renderer = new RayCaster(things, 1600, 900, true);
+        renderer = new RayCaster(things, 1600, 900, false);
         break;
       default:
         break;
@@ -73,7 +73,7 @@ public class Engine {
   }
 
   public Engine(int dimension, Stage primaryStage) {
-    this(dimension, new Things(), primaryStage);
+    this(dimension, new Things(0), primaryStage);
   }
 
   protected void wireInput() {

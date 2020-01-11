@@ -37,7 +37,7 @@ public class RayCaster implements Renderer {
     mapObject = this.things.getMap();
     map = mapObject.getMap();
     player = this.things.getPlayer();
-    textures = new Textures(true);
+    textures = new Textures(highRes);
     screenWidth = width;
     screenHeight = height;
     pixels = new int[screenWidth * screenHeight];
