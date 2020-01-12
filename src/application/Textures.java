@@ -43,19 +43,23 @@ public class Textures {
 
   private ArrayList<Texture> textures;
   private ArrayList<Texture> floorCeiling;
-  private final String[] paths = {"bricks.png", "chestsides.png", "slate.png", "walkstone.png",
+  private final String[] paths = {"bricks.png", "chestsides.png", "slate.png", "bark.png",
       "bookshelf.png", "redbricks.png", "stone.png"};
-  private final String[] paths2 = {"stonewall.jpg", "wood.jpg", "squarebrick.jpg", "cobble.jpg",
-      "box.jpg", "redbricks.jpg", "darkwood.jpg"};
+  private final String[] paths2 = {"stonewall.jpg", "wood.jpg", "squarebrick.jpg",
+      "stonebricks.jpg", "box.jpg", "redbricks.jpg", "darkwood.jpg"};
+  private final String[] paths3 = {"floor.png", "ceiling.png"};
+  private final String[] paths4 = {"floor.jpg", "ceiling.jpg"};
 
   public Textures(boolean highRes) {
     textures = new ArrayList<Texture>();
     floorCeiling = new ArrayList<Texture>();
-    if (highRes)
+    if (highRes) {
       createTextures(paths2, "highres/");
-    else
+      createFloorCeiling(paths4, "highres/");
+    } else {
       createTextures(paths, "");
-    createFloor();
+      createFloorCeiling(paths3, "");
+    }
   }
 
   private void createTextures(String[] pathList, String prefix) {
@@ -63,10 +67,10 @@ public class Textures {
       textures.add(new Texture("assets/textures/" + prefix + str));
     }
   }
-  
-  private void createFloor() {
-    floorCeiling.add(new Texture("assets/textures/floor.png"));
-    //floorCeiling.add(new Texture("assets/textures/ceiling.png"));
+
+  private void createFloorCeiling(String[] path, String prefix) {
+    floorCeiling.add(new Texture("assets/textures/" + prefix + path[0]));
+    floorCeiling.add(new Texture("assets/textures/" + prefix + path[1]));
   }
 
   public Texture getTexture(int index) {

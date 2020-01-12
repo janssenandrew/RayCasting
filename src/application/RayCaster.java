@@ -93,7 +93,7 @@ public class RayCaster implements Renderer {
         pixels[(int) (row * screenWidth + column)] = color;
 
         // ceiling
-        color = textures.getFloor().getPixels()[texWidth * ty + tx];
+        color = textures.getCeiling().getPixels()[texWidth * ty + tx];
         pixels[(int) ((screenHeight - row - 1) * screenWidth + column)] = color;
       }
     }
