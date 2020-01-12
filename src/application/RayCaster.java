@@ -59,6 +59,46 @@ public class RayCaster implements Renderer {
     double yRayDirection;
     double xSideDist;
     double ySideDist;
+
+    for (double row = screenHeight / 2 + 1; row < screenHeight; row++) {
+      double xMin = direction[0] - screen[0];
+      double xMax = direction[0] + screen[0];
+      double yMin = direction[1] - screen[1];
+      double yMax = direction[1] + screen[1];
+
+      int pos = (int) row - (screenHeight / 2);
+      double viewHeight = 0.5 * screenHeight;
+      double rowDistance = viewHeight / pos;
+
+      double xStep = rowDistance * (xMax - xMin) / screenWidth;
+      double yStep = rowDistance * (yMax - yMin) / screenWidth;
+
+      double floorX = position[0] + rowDistance * xMin;
+      double floorY = position[1] + rowDistance * yMin;
+
+      for (int column = 0; column < screenWidth; column++) {
+        int xSquare = (int) floorX;
+        int ySquare = (int) floorY;
+
+        int texWidth = textures.getFloor().getWidth();
+        int texHeight = textures.getFloor().getHeight();
+
+        int tx = (int) (texWidth * (floorX - xSquare)) & (texWidth - 1);
+        int ty = (int) (texHeight * (floorY - ySquare)) & (texHeight - 1);
+
+        floorX += xStep;
+        floorY += yStep;
+        // floor
+        int color = textures.getFloor().getPixels()[texWidth * ty + tx];
+        pixels[(int) (row * screenWidth + column)] = color;
+
+        // ceiling
+        color = textures.getFloor().getPixels()[texWidth * ty + tx];
+        pixels[(int) ((screenHeight - row - 1) * screenWidth + column)] = color;
+      }
+    }
+
+
     for (double column = 0; column < screenWidth; column++) {
       cameraPosition = ((2 * column) / (double) screenWidth) - 1;
       xRayDirection = direction[0] + screen[0] * cameraPosition;

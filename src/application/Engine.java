@@ -73,7 +73,7 @@ public class Engine {
   }
 
   public Engine(int dimension, Stage primaryStage) {
-    this(dimension, new Things(0), primaryStage);
+    this(dimension, new Things(), primaryStage);
   }
 
   protected void wireInput() {

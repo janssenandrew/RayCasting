@@ -22,6 +22,7 @@ public class TwoDimensional implements Renderer {
   private int scale;
 
   private Things things;
+  // TODO add textures maybe
   // private Textures textures;
   private int[] pixels;
 

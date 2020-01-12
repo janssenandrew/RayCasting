@@ -42,6 +42,7 @@ public class Textures {
   }
 
   private ArrayList<Texture> textures;
+  private ArrayList<Texture> floorCeiling;
   private final String[] paths = {"bricks.png", "chestsides.png", "slate.png", "walkstone.png",
       "bookshelf.png", "redbricks.png", "stone.png"};
   private final String[] paths2 = {"stonewall.jpg", "wood.jpg", "squarebrick.jpg", "cobble.jpg",
@@ -49,10 +50,12 @@ public class Textures {
 
   public Textures(boolean highRes) {
     textures = new ArrayList<Texture>();
+    floorCeiling = new ArrayList<Texture>();
     if (highRes)
       createTextures(paths2, "highres/");
     else
       createTextures(paths, "");
+    createFloor();
   }
 
   private void createTextures(String[] pathList, String prefix) {
@@ -60,8 +63,21 @@ public class Textures {
       textures.add(new Texture("assets/textures/" + prefix + str));
     }
   }
+  
+  private void createFloor() {
+    floorCeiling.add(new Texture("assets/textures/floor.png"));
+    //floorCeiling.add(new Texture("assets/textures/ceiling.png"));
+  }
 
   public Texture getTexture(int index) {
     return textures.get(index);
+  }
+
+  public Texture getFloor() {
+    return floorCeiling.get(0);
+  }
+
+  public Texture getCeiling() {
+    return floorCeiling.get(1);
   }
 }
